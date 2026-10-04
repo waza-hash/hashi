@@ -1,0 +1,12 @@
+---
+const { product, whatsappHref } = Astro.props;
+---
+<article class="product-card">
+  <div class="product-icon" aria-hidden="true">{product.category === 'school' ? '✎' : '▤'}</div>
+  <div class="product-card-body">
+    <span class="eyebrow">{product.tag} supply</span>
+    <h3>{product.name}</h3>
+    <p>{product.description}</p>
+    <a class="text-link" href={whatsappHref} target={whatsappHref.startsWith('https://') ? '_blank' : undefined} rel={whatsappHref.startsWith('https://') ? 'noreferrer' : undefined}>Ask about stock →</a>
+  </div>
+</article>

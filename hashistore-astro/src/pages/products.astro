@@ -1,0 +1,46 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProductCard from '../components/ProductCard.astro';
+import { products } from '../data/products';
+
+const category = Astro.url.searchParams.get('category') || 'all';
+const filtered = category === 'all' ? products : products.filter((p) => p.category === category);
+const whatsappNumber = import.meta.env.PUBLIC_WHATSAPP_NUMBER || '';
+const whatsappHref = whatsappNumber
+  ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent('Hello HashiStore, I would like to enquire about your products.')}`
+  : `mailto:hashirama.corp@gmail.com?subject=${encodeURIComponent('HashiStore product enquiry')}`;
+---
+
+<Layout title="Products | hashistore" description="Browse HashiStore school and office stationery supplies.">
+  <section class="product-hero">
+    <div class="product-hero-overlay"></div>
+    <div class="container product-hero-content">
+      <span class="eyebrow light">The HashiStore range</span>
+      <h1>School & office supplies.</h1>
+      <p>Browse the showcase, filter by category and contact us for current stock, pricing and wholesale quantities.</p>
+    </div>
+  </section>
+
+  <section class="section products-section">
+    <div class="container">
+      <div class="filter-bar" aria-label="Product filters">
+        <span class="filter-label">Filter</span>
+        <a class={category === 'all' ? 'list-active' : ''} href="/products">All supplies</a>
+        <a class={category === 'school' ? 'list-active' : ''} href="/products?category=school">School</a>
+        <a class={category === 'office' ? 'list-active' : ''} href="/products?category=office">Office</a>
+      </div>
+
+      <div class="products-intro">
+        <div>
+          <span class="eyebrow">Showing {filtered.length} items</span>
+          <h2>{category === 'school' ? 'School essentials' : category === 'office' ? 'Office essentials' : 'Everyday stationery essentials'}</h2>
+        </div>
+        <p>Product listings are a showcase rather than a live inventory. Use WhatsApp to confirm availability and ask about bulk orders.</p>
+      </div>
+
+      <div class="products-grid">
+        {filtered.map((product) => <ProductCard product={product} whatsappHref={whatsappHref} />)}
+      </div>
+    </div>
+  </section>
+</Layout>
